@@ -1,23 +1,25 @@
 import { useState } from "react";
+import { useAuth } from "../context/Authcontext";
 
 export const LoginForm = () => {
-  const [username, setUsername] = useState("");
+  const { login, error } = useAuth();
+
+  const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    // Handle sign in logic here
-    console.log("Signing in with:", username, password);
+    await login(email, password);
   };
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="Username">Username</label>
+        <label htmlFor="email">email</label>
         <input
-          id="username"
+          id="email"
           type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={email}
+          onChange={(e) => setemail(e.target.value)}
           required
         />
       </div>
@@ -32,7 +34,7 @@ export const LoginForm = () => {
           required
         />
       </div>
-
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <button type="submit">Sign In</button>
     </form>
   );
