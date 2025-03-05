@@ -1,0 +1,49 @@
+FROM node:20-slim
+
+# Install required dependencies
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    sqlite3 \
+    libsqlite3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Copy package files
+COPY package.json ./
+
+# Convert pnpm dependencies to npm format
+RUN npm install
+
+# Explicitly install sqlite3
+RUN npm install sqlite3 --save
+
+# Copy application code
+COPY . .
+
+# Build the application
+RUN npm run build
+
+# Set NODE_ENV environment variable
+ENV NODE_ENV=production
+
+# Create data directory for SQLite
+RUN mkdir -p data
+RUN chmod 777 data
+
+# Expose the port your app runs on
+EXPOSE 8080
+
+# Create a start script that includes database seeding
+RUN echo '#!/bin/sh' > start.sh && \
+    echo 'if [ -f "./dist/utils/seedDatabase.js" ]; then' >> start.sh && \
+    echo '  node ./dist/utils/seedDatabase.js' >> start.sh && \
+    echo 'fi' >> start.sh && \
+    echo 'node ./dist/index.js' >> start.sh && \
+    chmod +x start.sh
+
+# Run the script
+CMD ["sh", "/usr/src/app/start.sh"]
