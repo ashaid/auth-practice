@@ -1,3 +1,5 @@
+# Project Setup Guide
+
 ## Running the client
 
 - `cd client`
@@ -11,9 +13,18 @@
 - `npm run seed`
 - `npm run dev`
 
-### Testing after database has been seeded
+## Quick start with Docker
+
+- `docker compose up -d`
+
+## Testing after database has been seeded
 
 Make sure to run seed command `npm run seed` at least once. Also ensure the server is running `npm run dev`
+
+### Available test accounts
+
+- Admin account: `admin@example.com` with password `Admin123!` - returns admin privileges and sample data
+- User account: `user@example.com` with password `User123!` - returns basic user info only
 
 #### Login as Admin:
 
