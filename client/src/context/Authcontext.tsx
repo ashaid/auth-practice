@@ -35,7 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(true);
       try {
         const userData = await authApi.getUserInfo(token);
-        setUser([userData]);
+        setUser(userData);
         setError(null);
       } catch (err) {
         setError("Failed to load user data");

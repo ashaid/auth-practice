@@ -31,7 +31,7 @@ export const authApi = {
     return response.json();
   },
 
-  getUserInfo: async (token: string): Promise<User> => {
+  getUserInfo: async (token: string): Promise<User[]> => {
     const response = await fetch(`${API_URL}/auth/userInfo`, {
       headers: {
         Authorization: `Bearer ${token}`,

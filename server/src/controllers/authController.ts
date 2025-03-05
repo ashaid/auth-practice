@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../entity/User";
 import { validationResult } from "express-validator";
 import { AuthRequest } from "../middleware/auth";
+import { sampleResponse } from "../utils/sampleResponse";
 
 export const login = async (req: Request, res: Response): Promise<void> => {
   const errors = validationResult(req);
@@ -49,9 +50,12 @@ export const userInfo = async (req: AuthRequest, res: Response) => {
       res.status(404).json({ message: "User not found" });
       return;
     }
-
-    const { password, ...userWithoutPassword } = user;
-    res.json(userWithoutPassword);
+    if (user.role === "admin") {
+      res.json(sampleResponse);
+    } else {
+      const { password, ...userWithoutPassword } = user;
+      res.json([userWithoutPassword]);
+    }
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server Error" });
