@@ -229,9 +229,20 @@ const sampleData = [
 export const UserInfoTable = () => {
   return (
     <>
-      {sampleData.map((entry, index) => (
-        <div key={index}>{entry.name}</div>
-      ))}
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Status</th>
+        </tr>
+        {sampleData.map((entry, index) => (
+          <tr key={index}>
+            <th>{entry.name}</th>
+            <th>{entry.email}</th>
+            <th>{entry.status}</th>
+          </tr>
+        ))}
+      </table>
     </>
   );
 };
