@@ -18,12 +18,14 @@ Make sure to run seed command `npm run seed` at least once. Also ensure the serv
 #### Login as Admin:
 
 ```bash
-curl -X POST http://localhost:8080/api/auth/login \
+curl -X GET http://localhost:8080/api/auth/login \
 -H "Content-Type: application/json" \
 -d '{"email":"admin@example.com","password":"Admin123!"}'
 ```
 
+#### Get user info
+
 ```bash
-curl -X GET http://localhost:8080/api/protected \
+curl -X GET http://localhost:8080/api/auth/userInfo \
 -H "Authorization: Bearer $PASTE_TOKEN"
 ```

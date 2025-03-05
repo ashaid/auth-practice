@@ -4,7 +4,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { AppDataSource } from "./data-source";
 import authRoutes from "./routes/authRoutes";
-import { authMiddleware } from "./middleware/auth";
 
 // Load environment variables
 dotenv.config();
@@ -24,11 +23,6 @@ app.use(
 
 // Routes
 app.use("/api/auth", authRoutes);
-
-// Protected route example
-app.get("/api/protected", authMiddleware, (req, res) => {
-  res.json({ message: "This is a protected route" });
-});
 
 // Connect to database and start server
 AppDataSource.initialize()

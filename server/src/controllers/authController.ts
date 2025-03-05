@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { User } from "../entity/User";
 import { validationResult } from "express-validator";
+import { AuthRequest } from "../middleware/auth";
 
 export const login = async (req: Request, res: Response): Promise<void> => {
   const errors = validationResult(req);
@@ -33,6 +34,24 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     );
 
     res.json({ token });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const userInfo = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    const user = await User.findOne({ where: { id: userId } });
+
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+
+    const { password, ...userWithoutPassword } = user;
+    res.json(userWithoutPassword);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server Error" });
