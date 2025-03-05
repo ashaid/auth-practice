@@ -4,10 +4,11 @@ import jwt from "jsonwebtoken";
 import { User } from "../entity/User";
 import { validationResult } from "express-validator";
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response): Promise<void> => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    res.status(400).json({ errors: errors.array() });
+    return;
   }
 
   try {
@@ -15,12 +16,14 @@ export const login = async (req: Request, res: Response) => {
 
     const user = await User.findOne({ where: { email } });
     if (!user) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      res.status(400).json({ message: "Invalid credentials" });
+      return;
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      res.status(400).json({ message: "Invalid credentials" });
+      return;
     }
 
     const token = jwt.sign(
