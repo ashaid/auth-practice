@@ -1,10 +1,12 @@
 import { LoginForm } from "./components/LoginForm";
+import { UserInfoTable } from "./components/UserInfoTable";
 
 function App() {
   return (
     <>
-      Auth Practice
+      <h1>Auth Practice</h1>
       <LoginForm />
+      <UserInfoTable />
     </>
   );
 }
