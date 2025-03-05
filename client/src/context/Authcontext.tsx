@@ -10,7 +10,7 @@ import { tokenStorage } from "../utils/storage";
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: User | null;
+  user: User[] | null;
   loading: boolean;
   error: string | null;
   login: (email: string, password: string) => Promise<boolean>;
@@ -21,7 +21,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(tokenStorage.getToken());
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -35,7 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(true);
       try {
         const userData = await authApi.getUserInfo(token);
-        setUser(userData);
+        setUser([userData]);
         setError(null);
       } catch (err) {
         setError("Failed to load user data");
