@@ -5,6 +5,6 @@ import { loginValidator } from "../validators/authValidators";
 
 const router = Router();
 
-router.post("/login", loginValidator, login);
+router.get("/login", loginValidator, login);
 
 export default router;
